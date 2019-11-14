@@ -277,25 +277,11 @@
             (setq lst2 (vl-sort lst2 '(lambda (x y) (> (car x) (car y)))))
             (setq i 0)
 
-	    ;Crio uma variável para armazenar um numero que será usado dentro do FOREACH, e zerado quando sair
-	    ;(setq plantanumber 1)
-
 			(setq count 0)
-      ;Verificação da necessidade de imprimir essa planta
-
 
 			(repeat 8
 
         (setq PlotThis "0")
-
-        (if (= count 0) (if (= plotLayout "1")(setq PlotThis "1")))
-        (if (= count 1) (if (= plotHidraulico "1")(setq PlotThis "1")))
-        (if (= count 2) (if (= plotEletrico "1")(setq PlotThis "1")))
-        (if (= count 3) (if (= plotLuminotecnico "1")(setq PlotThis "1")))
-        (if (= count 4) (if (= plotSecoes "1")(setq PlotThis "1")))
-        (if (= count 5) (if (= plotForro "1")(setq PlotThis "1")))
-        (if (= count 6) (if (= plotPiso "1")(setq PlotThis "1")))
-        (if (= count 7) (if (= plotArcondicionado "1")(setq PlotThis "1")))
 
 				(if (= count 0) (setq none(layout)))
 				(if (= count 1) (setq none(hidraulico)))
@@ -357,7 +343,7 @@
 				(if (= blocksize "A2-100") (setq papersize a2fullbleed))
 				(if (= blocksize "A2-125") (setq papersize a2fullbleed))
 
-        (if (= PlotThis "1")
+
             (foreach x lst2
 
             ;Nesta parte, faço a lógica para decidir se a planta é Landscape ou Portrait,
@@ -424,7 +410,6 @@
                 )
             ) ;foreach
 
-            ) ;if
 
             ;;Adiciono mais um na var COUNT pra lógica funcionar lá em cima
 						(setq count (1+ count))
@@ -670,82 +655,65 @@
 
 ; MOSTRAR LAYOUT
 (defun layout ()
-  (setq oldlayer (getvar "CLAYER")) ;Pega a layer atual
 	(command "setvar" "clayer" "0")   ;Seta a Layer Atual como Layer 0
 	(command "_laythw")               ;Exibe todas as layers para depois apagar as específicas
 	(command "_.layer" "_freeze" "2 Hidráulica,2 Hidráulica Cotas,3 Elétrico,3 Elétrico Cotas,4 Luminotécnico,4 Luminotécnico Cotas,4 Luminotécnico Seções,5 Forro,5 Forro Contorno,5 Forro Cotas,6 Piso,6 Piso Cotas,7 Ar Condicionado,7 Ar Condicionado Cotas" "")
-  (setvar "CLAYER" oldlayer)        ;Retorna a layer
 )
 
 ; MOSTRAR HIDRAULICO
 (defun hidraulico ()
-  (setq oldlayer (getvar "CLAYER"))
 	(command "setvar" "clayer" "0")
 	(command "_laythw")
 	(command "_.layer" "_freeze" "1 Layout Cotas,1 Layout Texto,3 Elétrico,3 Elétrico Cotas,4 Luminotécnico,4 Luminotécnico Cotas,4 Luminotécnico Seções,5 Forro,5 Forro Contorno,5 Forro Cotas,6 Piso,6 Piso Cotas,7 Ar Condicionado,7 Ar Condicionado Cotas" "")
-  (setvar "CLAYER" oldlayer)
+
 )
 
 ; MOSTRAR ELÉTRICO
 (defun eletrico ()
-  (setq oldlayer (getvar "CLAYER"))
 	(command "setvar" "clayer" "0")
 	(command "_laythw")
 	(command "_.layer" "_freeze" "1 Layout 01,1 Layout 02,1 Layout 03,1 Layout Cotas,1 Layout Texto,2 Hidráulica,2 Hidráulica Cotas,4 Luminotécnico,4 Luminotécnico Cotas,4 Luminotécnico Seções,5 Forro,5 Forro Contorno,5 Forro Cotas,6 Piso,6 Piso Cotas,7 Ar Condicionado,7 Ar Condicionado Cotas" "")
-  (setvar "CLAYER" oldlayer)
 )
 
 ;MOSTRAR LUMINOTÉCNICO
 (defun luminotecnico ()
-  (setq oldlayer (getvar "CLAYER"))
 	(command "setvar" "clayer" "0")
 	(command "_laythw")
 	(command "_.layer" "_freeze" "1 Layout Cotas,1 Layout Texto,2 Hidráulica,2 Hidráulica Cotas,3 Elétrico,3 Elétrico Cotas,4 Luminotécnico Seções,5 Forro,5 Forro Cotas,6 Piso,6 Piso Cotas,7 Ar Condicionado,7 Ar Condicionado Cotas" "")
-  (setvar "CLAYER" oldlayer)
 )
 
 ; MOSTRAR SEÇÕES
 (defun secoes ()
-  (setq oldlayer (getvar "CLAYER"))
 	(command "setvar" "clayer" "0")
 	(command "_laythw")
 	(command "_.layer" "_freeze" "1 Layout 01,1 Layout 02,1 Layout 03,1 Layout Cotas,1 Layout Texto,2 Hidráulica,2 Hidráulica Cotas,3 Elétrico,3 Elétrico Cotas,4 Luminotécnico Cotas,5 Forro,5 Forro Cotas,6 Piso,6 Piso Cotas,7 Ar Condicionado,7 Ar Condicionado Cotas" "")
-  (setvar "CLAYER" oldlayer)
 )
 
 ; MOSTRAR FORRO
 (defun forro ()
-  (setq oldlayer (getvar "CLAYER"))
 	(command "setvar" "clayer" "0")
 	(command "_laythw")
 	(command "_.layer" "_freeze" "1 Layout 01,1 Layout 02,1 Layout 03,1 Layout Cotas,1 Layout Texto,2 Hidráulica,2 Hidráulica Cotas,3 Elétrico,3 Elétrico Cotas,4 Luminotécnico,4 Luminotécnico Cotas,4 Luminotécnico Seções,6 Piso,6 Piso Cotas,7 Ar Condicionado,7 Ar Condicionado Cotas" "")
-  (setvar "CLAYER" oldlayer)
 )
 
 ; MOSTRAR PISO
 (defun piso ()
-  (setq oldlayer (getvar "CLAYER"))
 	(command "setvar" "clayer" "0")
 	(command "_laythw")
 	(command "_.layer" "_freeze" "1 Layout 01,1 Layout 02,1 Layout 03,1 Layout Cotas,1 Layout Texto,2 Hidráulica,2 Hidráulica Cotas,3 Elétrico,3 Elétrico Cotas,4 Luminotécnico,4 Luminotécnico Cotas,4 Luminotécnico Seções,5 Forro,5 Forro Contorno,5 Forro Cotas,7 Ar Condicionado,7 Ar Condicionado Cotas" "")
-  (setvar "CLAYER" oldlayer)
 )
 
 ; MOSTRAR ARCONDICIONADO
 (defun arcondicionado ()
-  (setq oldlayer (getvar "CLAYER"))
 	(command "setvar" "clayer" "0")
 	(command "_laythw")
 	(command "_.layer" "_freeze" "1 Layout 01,1 Layout 02,1 Layout 03,1 Layout Cotas,1 Layout Texto,2 Hidráulica,2 Hidráulica Cotas,3 Elétrico,3 Elétrico Cotas,4 Luminotécnico,4 Luminotécnico Cotas,4 Luminotécnico Seções,5 Forro,5 Forro Contorno,5 Forro Cotas,6 Piso,6 Piso Cotas" "")
-  (setvar "CLAYER" oldlayer)
 )
 
 ; REEXIBIR TUDO
 (defun reexibir ()
-  (setq oldlayer (getvar "CLAYER"))
   (command "setvar" "clayer" "0")
   (command "_laythw")
-  (setvar "CLAYER" oldlayer)
 )
 
 ; DEFUN PARA CORRIGIR SOMENTE AS COTAS SELECIONADAS
