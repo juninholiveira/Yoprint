@@ -6,7 +6,7 @@
 (setq A3PlotterRede "\\\\Desk-interiores\\EPSON L1300 Series")                  ; Impressora colorida A3 Epson  BACKUP EPSON: \\\\Desk-interiores\\EPSON L1300 Series
 (setq A3PlotterServidor "EPSON L1300 Series")
 
-; ctb
+; CTB
 (setq ctbmanual "ctb - paula e bruna.ctb")                                      ; Escreve aqui o CTB que vai ser usado pelo ZWCAD (OBS.: Não esquecer de colocar ".ctb" no final)
 
 ; PAPÉIS
@@ -40,8 +40,6 @@
 (setq a2-125 "A2-125")
 
 (setvar "BACKGROUNDPLOT" 2)	                                                    ;Aqui eu seto a variável do sistema pra PLOT em foreground e PUBLISH em background (Número 2)
-
-;Aui eu reseto os
 (SETQ ORIGPATH (STRCAT (GETENV "ACAD")";"))
 (SETQ ONEPATH (STRCAT "R:\\INTERIORES\\1.Padrão\\Padrão PB - AutoCad\\Plugins\\PluginsToLoad;R:\\INTERIORES\\1.Padrão\\Padrão PB - AutoCad\\Hachuras"));ADD PATHS HERE, NOT TO MANY OR IT GETS CUT OFF
 (SETQ MYENV (STRCAT ORIGPATH ONEPATH))
@@ -49,7 +47,12 @@
 (strlen (getenv "ACAD"));DON'T GO OVER 800 OR BAD THINGS HAPPEN
 ; ****************************************************************************************************************************
 
-;PRINTALLTOPDF ***************************************************************************************************************
+
+
+
+; PRINT ALL TO PDF
+; ****************************************************************************************************************************
+
 (defun C:printalltopdf (/ dwg file hnd i len llpt lst mn mx ss tab urpt subfolder cpath newpath currententity scale)
 
   (setq p1 (getpoint "\nFaça a seleção das pranchas à serem impressas:"))
@@ -254,13 +257,17 @@
     );if
     (princ)
 );defun
-;PRINTALLTOPDF ***************************************************************************************************************
 
-;PRINTALLA3 ***************************************************************************************************************
-(defun C:printalla3 (/ dwg file hnd i len llpt mn mx  tab urpt subfolder cpath newpath currententity scale
-		       lst2
-		       ss2
-		    )
+; ********************************************************************************************************************************************
+; END PRINT ALL TO PDF
+
+
+
+
+; PRINT ALL A3
+; ********************************************************************************************************************************************
+
+(defun C:printalla3 (/ dwg file hnd i len llpt mn mx  tab urpt subfolder cpath newpath currententity scale lst2 ss2)
 
 (initget "A4-25 A4-50 A4-75 A4-100 A4-125 A3-50 A3-75 A3-100 A3-125 A2-50 A2-75 A2-100 A2-125")
 (setq blocksize (cond ( (getkword "\nChoose [A4-25/A4-50/A4-75/A4-100/A4-125/A3-50/A3-75/A3-100/A3-125/A2-50/A2-75/A2-100/A2-125] <A3-100>: ") ) ( "A3-100" )))
@@ -422,13 +429,18 @@
 (setq none(changecolorsback))
 
 ) ;end defun
-;PRINTALLA3 ***************************************************************************************************************
 
-;PRINTSINGLESHEET ***************************************************************************************************************
+; ********************************************************************************************************************************************
+; END PRINT ALL A3
+
+
+
+
+
+; PRINT SINGLE SHEET
+; ********************************************************************************************************************************************
+
 (defun printsinglesheet()
-
-;(initget "Servidor Rede")
-;(setq tipoDoComputador (cond ( (getkword "\nChoose [Servidor/Rede] <Rede>: ") ) ( "Rede" )))
 
   ;LÓGICA PARA DECIDIR SE ESTÁ NO SERVIDOR OU NA REDE E ESCOLHER A IMPRESSORA CERTA
   ;Pega todas as Plotters e armazena na lista "plottersList"
@@ -438,7 +450,7 @@
   (setq plotter A3PlotterRede)
   (foreach a plottersList
     (if (= a A3PlotterServidor) (setq plotter A3PlotterServidor))
-  );END foreach)
+  ) ;END foreach
 
 ;Seleciona todas as pranchas
 (setq p1 (getpoint "\nFaça a seleção das pranchas à serem impressas:"))
@@ -596,7 +608,6 @@
                             )
 
 
-          ; ---------------
                           (command "-plot"
                                    "yes"
                                    (car x)
@@ -616,29 +627,35 @@
                                    ""
                           )
 
-;                          (setq currentItemInList (+ currentItemInList 1))
-;                          (if
-;                            (= currentItemInList lstLength)
-;                            (command "No" "No" "Yes")
-;                            (command "No" "No" "Yes")
-;                          )
                           (command "No" "No" "Yes")
-
-
-
-                          ;(if (/= (car x) "Model")
-                          ;    (command "No" "No" "Yes")
-                          ;)
 
         );foreach
         (setq lst nil)
     );progn
-
 );if
 );defun
-;PRINTSINGLESHEET ***************************************************************************************************************
 
-;FUNÇÕES DE SUPORTE ***************************************************************************************************************
+; ********************************************************************************************************************************************
+; END PRINT SINGLE SHEET
+
+
+
+
+; SHOW LAYERS
+; ********************************************************************************************************************************************
+
+(defun C:showlayout()           (setq none(layout)))
+(defun C:showhidraulico()       (setq none(hidraulico)))
+(defun C:showeletrico()         (setq none(eletrico)))
+(defun C:showluminotecnico()    (setq none(luminotecnico)))
+(defun C:showsecoes()           (setq none(secoes)))
+(defun C:showforro()            (setq none(forro)))
+(defun C:showpiso()             (setq none(piso)))
+(defun C:showarcondicionado()   (setq none(arcondicionado)))
+(defun C:showall()              (setq none(reexibir)))
+
+(defun C:changecolorstogrey()   (setq none (changecolorstogrey)))
+(defun C:changecolorsback()     (setq none (changecolorsback)))
 
 ;MÉTODO PARA TROCAR COR DOS LAYOUTS PARA CINZA
 (defun changecolorstogrey()
@@ -665,7 +682,6 @@
 	(command "setvar" "clayer" "0")
 	(command "_laythw")
 	(command "_.layer" "_freeze" "1 Layout Cotas,1 Layout Texto,3 Elétrico,3 Elétrico Cotas,4 Luminotécnico,4 Luminotécnico Cotas,4 Luminotécnico Seções,5 Forro,5 Forro Contorno,5 Forro Cotas,6 Piso,6 Piso Cotas,7 Ar Condicionado,7 Ar Condicionado Cotas" "")
-
 )
 
 ; MOSTRAR ELÉTRICO
@@ -716,9 +732,17 @@
   (command "_laythw")
 )
 
-; DEFUN PARA CORRIGIR SOMENTE AS COTAS SELECIONADAS
-(defun fixsomecotas ( / ss textString)
+; ********************************************************************************************************************************************
+; END SHOW LAYERS
 
+
+
+
+; FIXCOTAS
+; ********************************************************************************************************************************************
+
+; DEFUN PARA CORRIGIR SOMENTE AS COTAS SELECIONADAS
+(defun C:fixsomecotas ( / ss textString)
   (if
   	(and (setq ss (ssget '((0 . "DIMENSION")))) (setq textString ""))
     ;THEN
@@ -742,8 +766,7 @@
 );_defun
 
 ; DEFUN PARA CORRIGIR TODAS AS COTAS
-(defun fixallcotas ( / ss textString)
-
+(defun C:fixallcotas ( / ss textString)
   (if
   	;PREDICATE
   	(and (setq ss (ssget "x" '((0 . "DIMENSION"))))(setq textString ""))
@@ -767,10 +790,16 @@
   (princ)
 );_defun
 
-
-; BELTB (Corrigir o bloco para Layer 0)
 ; ************************************************************************************************************************************************
- (defun C:beltb (/ *error* doc nametolist blkss inc blk lay blknames ent edata)
+; END FIXCOTAS
+
+
+
+
+; FIXBLOCK (Corrigir o bloco para Layer 0)
+; ************************************************************************************************************************************************
+
+ (defun C:fixblock (/ *error* doc nametolist blkss inc blk lay blknames ent edata)
 
    (defun *error* (errmsg)
      (if (not (wcmatch errmsg "Function cancelled,quit / exit abort,console break"))
@@ -828,6 +857,5 @@
    (princ)
  ); DEFUN
 
- ; ********************************************************************************************************************************************
- ; END beltb
- ; ********************************************************************************************************************************************
+; ********************************************************************************************************************************************
+; END FIXBLOCK
