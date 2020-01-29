@@ -49,7 +49,7 @@ label = "Yoprint 2017";
 	: edit_box
 	{
 		label = "CTB:";
-		value = "ctb - paula e bruna.ctb";
+		value = "ctb - escritório.ctb";
 		key = "ctbescolhido";
 		alignment = right;
 	}

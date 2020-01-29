@@ -56,10 +56,10 @@
   (princ)
 )
 
-    (if (> (substr (rtos (getvar 'cdate) 2 0) 3) "190901")                      ;(YY/MM/DD)
+    (if (> (substr (rtos (getvar 'cdate) 2 0) 3) "210101")                      ;(YY/MM/DD)
 
         (progn                                                                  ;Se o programa tiver expirado
-          (princ "Error 404 - Not Found")                                       ;Mensagem que exibe
+          (princ "Licença Expirada")                                            ;Mensagem que exibe
           (princ "\n")
           (exit)                                                                ;Cancela toda a rotina
 
@@ -80,7 +80,7 @@
 (action_tile "printalla3" "(done_dialog 1)")
 (action_tile "printsinglesheet" "(done_dialog 2)")
 
-(set_tile "ctbescolhido" "ctb - paula e bruna.ctb")
+(set_tile "ctbescolhido" "ctb - escritório.ctb")
 (action_tile "ctbescolhido" "(setq ctb $value)")
 (setq ctb (get_tile "ctbescolhido"))
 
