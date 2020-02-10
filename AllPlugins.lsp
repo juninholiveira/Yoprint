@@ -2,7 +2,7 @@
 
 ; IMPRESSORAS
 (setq pdfPlotter "DWG TO PDF.PC3")                                              ; Impressora para PDF
-(setq brotherPlotter "Brother DCP-7065DN Printer")                              ; Impressora A4 Brother
+(setq brotherPlotter "L6160 Series(Rede)")                              	; Impressora A4
 (setq A3PlotterRede "\\\\Desk-interiores\\EPSON L1300 Series")                  ; Impressora colorida A3 Epson  BACKUP EPSON: \\\\Desk-interiores\\EPSON L1300 Series
 (setq A3PlotterServidor "EPSON L1300 Series")
 
@@ -12,7 +12,7 @@
 (setq a2fullbleed "ISO FULL BLEED A2 (594.00 x 420.00 MM)")
 
 (setq epsonA3 "A3 (297 x 420 mm)")
-(setq epsonA4 "A4")                                                             ; BACKUP da folha da Epson: "A4 (210 x 297 mm)"
+(setq epsonA4 "A4 (210 x 297 mm)")                                                             ; BACKUP da folha da Epson: "A4 (210 x 297 mm)"
 
 ; BLOCOS DE FOLHA
 (setq a4-20 "A4-20")
@@ -583,13 +583,15 @@
 
   ;LÓGICA PARA DECIDIR SE ESTÁ NO SERVIDOR OU NA REDE E ESCOLHER A IMPRESSORA CERTA
   ;Pega todas as Plotters e armazena na lista "plottersList"
-  (setq ad (vla-get-activedocument (vlax-get-acad-object)))
-  (vla-RefreshPlotDeviceInfo (vla-get-activelayout ad))
-  (setq plottersList (vlax-safearray->list (vlax-variant-value (vla-getplotdevicenames (vla-item (vla-get-layouts ad) "Model")))))
-  (setq plotter A3PlotterRede)
-  (foreach a plottersList
-    (if (= a A3PlotterServidor) (setq plotter A3PlotterServidor))
-  );END foreach)
+  ;(setq ad (vla-get-activedocument (vlax-get-acad-object)))
+  ;(vla-RefreshPlotDeviceInfo (vla-get-activelayout ad))
+  ;(setq plottersList (vlax-safearray->list (vlax-variant-value (vla-getplotdevicenames (vla-item (vla-get-layouts ad) "Model")))))
+  ;(setq plotter A3PlotterRede)
+  ;(foreach a plottersList
+  ;  (if (= a A3PlotterServidor) (setq plotter A3PlotterServidor))
+  ;);END foreach)
+
+	(setq plotter brotherPlotter)
 
 ;Seleciona todas as pranchas
 (setq p1 (getpoint "\nFaça a seleção das pranchas à serem impressas:"))
